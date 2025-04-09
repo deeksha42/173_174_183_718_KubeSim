@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% block content %}
+<div class="row">
+  <div class="col-md-4">
+    <div class="card mb-4">
+      <div class="card-header">Add Node</div>
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('main.add_node') }}">
+          <div class="mb-3">
+            <label class="form-label">CPU Cores</label>
+            <input
+              type="number"
+              name="cpu_cores"
+              class="form-control"
+              min="1"
+              value="1"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Create Node</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header">Cluster Nodes</div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>CPU Cores</th>
+              <th>Available</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for node_id, node in nodes.items() %}
+            <tr
+              class="{{ 'table-success' if node.status == 'healthy' else 'table-danger' }}"
+            >
+              <td>{{ node_id }}</td>
+              <td>{{ node.cpu_cores }}</td>
+              <td>{{ node.available_cpu }}</td>
+              <td>{{ node.status }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
